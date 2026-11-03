@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface OwnerRepository extends JpaRepository<Owner, Integer> {
     List<Owner> findByLastName(String lastName);
+    List<Owner> findByCity(String city);
 }

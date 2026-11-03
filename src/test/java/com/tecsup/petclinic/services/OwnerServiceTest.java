@@ -141,6 +141,23 @@ public class OwnerServiceTest {
         verifyNoMoreInteractions(ownerRepository);
     }
 
+    @Test
+    void testFindByCity() {
+        Owner first = new Owner(21, "Sebastian", "Espiritu", "Av. Sol 100", "Lima", "912345678");
+        Owner second = new Owner(23, "Luis", "Perez", "Calle Mar 300", "Lima", "934567890");
+        when(ownerRepository.findByCity("Lima")).thenReturn(List.of(first, second));
+
+        List<Owner> actual = ownerService.findByCity("Lima");
+
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+        assertEquals(List.of(first, second), actual);
+        assertEquals(List.of(21, 23), actual.stream().map(Owner::getId).toList());
+        assertTrue(actual.stream().allMatch(owner -> "Lima".equals(owner.getCity())));
+        verify(ownerRepository).findByCity("Lima");
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
 	//@Autowired
    //	private OwnerService ownerService;
 

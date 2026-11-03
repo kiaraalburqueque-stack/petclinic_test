@@ -13,6 +13,11 @@ public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
 
     @Override
+    public List<Owner> findByCity(String city) {
+        return ownerRepository.findByCity(city);
+    }
+
+    @Override
     public List<Owner> findByLastName(String lastName) {
         return ownerRepository.findByLastName(lastName);
     }
