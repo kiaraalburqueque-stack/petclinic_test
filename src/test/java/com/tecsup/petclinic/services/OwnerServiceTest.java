@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -102,6 +103,71 @@ public class OwnerServiceTest {
         assertEquals("Owner not found: 999", exception.getMessage());
         verify(ownerRepository).findById(999);
         verify(ownerRepository, never()).delete(any(Owner.class));
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
+    @Test
+    void testFindOwnerById() throws OwnerNotFoundException {
+        Owner existing = new Owner(21, "Sebastian", "Espiritu", "Av. Sol 100", "Lima", "912345678");
+        when(ownerRepository.findById(21)).thenReturn(Optional.of(existing));
+
+        Owner actual = ownerService.findById(21);
+
+        assertNotNull(actual);
+        assertEquals(21, actual.getId());
+        assertEquals("Sebastian", actual.getFirstName());
+        assertEquals("Espiritu", actual.getLastName());
+        assertEquals("Av. Sol 100", actual.getAddress());
+        assertEquals("Lima", actual.getCity());
+        assertEquals("912345678", actual.getTelephone());
+        verify(ownerRepository).findById(21);
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
+    @Test
+    void testFindByLastName() {
+        Owner first = new Owner(21, "Sebastian", "Espiritu", "Av. Sol 100", "Lima", "912345678");
+        Owner second = new Owner(22, "Ana", "Espiritu", "Calle Luna 200", "Cusco", "923456789");
+        when(ownerRepository.findByLastName("Espiritu")).thenReturn(List.of(first, second));
+
+        List<Owner> actual = ownerService.findByLastName("Espiritu");
+
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+        assertEquals(List.of(first, second), actual);
+        assertEquals(List.of(21, 22), actual.stream().map(Owner::getId).toList());
+        assertTrue(actual.stream().allMatch(owner -> "Espiritu".equals(owner.getLastName())));
+        verify(ownerRepository).findByLastName("Espiritu");
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
+    @Test
+    void testFindByCity() {
+        Owner first = new Owner(21, "Sebastian", "Espiritu", "Av. Sol 100", "Lima", "912345678");
+        Owner second = new Owner(23, "Luis", "Perez", "Calle Mar 300", "Lima", "934567890");
+        when(ownerRepository.findByCity("Lima")).thenReturn(List.of(first, second));
+
+        List<Owner> actual = ownerService.findByCity("Lima");
+
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+        assertEquals(List.of(first, second), actual);
+        assertEquals(List.of(21, 23), actual.stream().map(Owner::getId).toList());
+        assertTrue(actual.stream().allMatch(owner -> "Lima".equals(owner.getCity())));
+        verify(ownerRepository).findByCity("Lima");
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
+    @Test
+    void testFindByLastName_Empty() {
+        when(ownerRepository.findByLastName("Inexistente")).thenReturn(List.of());
+
+        List<Owner> actual = ownerService.findByLastName("Inexistente");
+
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
+        assertEquals(0, actual.size());
+        verify(ownerRepository).findByLastName("Inexistente");
         verifyNoMoreInteractions(ownerRepository);
     }
 
