@@ -1,0 +1,1 @@
+Rama: KIARA Autor: kiaraalburqueque-stack Correo: kiara.alburqueque@tecsup.edu.pe Pruebas KIARA: 5; fallos 0; errores 0; omitidas 0 Suite completa: 20; fallos 0; errores 0; omitidas 0 Push inicial: exitoso; origin/KIARA configurado; cuenta confirmada por API GitHub
