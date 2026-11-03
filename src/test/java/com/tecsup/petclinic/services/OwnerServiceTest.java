@@ -158,6 +158,19 @@ public class OwnerServiceTest {
         verifyNoMoreInteractions(ownerRepository);
     }
 
+    @Test
+    void testFindByLastName_Empty() {
+        when(ownerRepository.findByLastName("Inexistente")).thenReturn(List.of());
+
+        List<Owner> actual = ownerService.findByLastName("Inexistente");
+
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
+        assertEquals(0, actual.size());
+        verify(ownerRepository).findByLastName("Inexistente");
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
 	//@Autowired
    //	private OwnerService ownerService;
 

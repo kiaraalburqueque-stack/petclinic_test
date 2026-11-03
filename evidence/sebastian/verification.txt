@@ -1,0 +1,7 @@
+Rama inicial y final: SEBASTIAN
+Estado inicial: limpio
+Autor: SebastianEspiritu <sebastian.espiritu@tecsup.edu.pe>
+Origin: https://github.com/kiaraalburqueque-stack/petclinic_test.git
+GitHub API /user: SebastianEspiritu confirmado
+GitHub API repositorio: permiso push no confirmado; publicación detenida
+No se realizó push ni se creó PR
