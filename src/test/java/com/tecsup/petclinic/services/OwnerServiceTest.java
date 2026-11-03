@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -120,6 +121,23 @@ public class OwnerServiceTest {
         assertEquals("Lima", actual.getCity());
         assertEquals("912345678", actual.getTelephone());
         verify(ownerRepository).findById(21);
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
+    @Test
+    void testFindByLastName() {
+        Owner first = new Owner(21, "Sebastian", "Espiritu", "Av. Sol 100", "Lima", "912345678");
+        Owner second = new Owner(22, "Ana", "Espiritu", "Calle Luna 200", "Cusco", "923456789");
+        when(ownerRepository.findByLastName("Espiritu")).thenReturn(List.of(first, second));
+
+        List<Owner> actual = ownerService.findByLastName("Espiritu");
+
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+        assertEquals(List.of(first, second), actual);
+        assertEquals(List.of(21, 22), actual.stream().map(Owner::getId).toList());
+        assertTrue(actual.stream().allMatch(owner -> "Espiritu".equals(owner.getLastName())));
+        verify(ownerRepository).findByLastName("Espiritu");
         verifyNoMoreInteractions(ownerRepository);
     }
 

@@ -5,11 +5,17 @@ import com.tecsup.petclinic.exceptions.OwnerNotFoundException;
 import com.tecsup.petclinic.repositories.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
+
+    @Override
+    public List<Owner> findByLastName(String lastName) {
+        return ownerRepository.findByLastName(lastName);
+    }
 
     @Override
     public Owner create(Owner owner) {
