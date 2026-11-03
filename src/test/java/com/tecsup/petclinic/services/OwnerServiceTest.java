@@ -105,6 +105,24 @@ public class OwnerServiceTest {
         verifyNoMoreInteractions(ownerRepository);
     }
 
+    @Test
+    void testFindOwnerById() throws OwnerNotFoundException {
+        Owner existing = new Owner(21, "Sebastian", "Espiritu", "Av. Sol 100", "Lima", "912345678");
+        when(ownerRepository.findById(21)).thenReturn(Optional.of(existing));
+
+        Owner actual = ownerService.findById(21);
+
+        assertNotNull(actual);
+        assertEquals(21, actual.getId());
+        assertEquals("Sebastian", actual.getFirstName());
+        assertEquals("Espiritu", actual.getLastName());
+        assertEquals("Av. Sol 100", actual.getAddress());
+        assertEquals("Lima", actual.getCity());
+        assertEquals("912345678", actual.getTelephone());
+        verify(ownerRepository).findById(21);
+        verifyNoMoreInteractions(ownerRepository);
+    }
+
 	//@Autowired
    //	private OwnerService ownerService;
 
